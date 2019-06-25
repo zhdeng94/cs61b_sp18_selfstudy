@@ -10,7 +10,7 @@ public class Planet {
     public double mass; // mass of the planet
     public String imgFileName; // name of the image file that depicts the planet
                                // for example "jupiter.gif"
-    public static final double G = 6.67e-11; // gravitational constant
+    private static final double G = 6.67e-11; // gravitational constant
 
 
     // the first constructor
