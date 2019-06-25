@@ -109,4 +109,9 @@ public class Planet {
         xxPos += xxVel * dt;
         yyPos += yyVel * dt;
     }
+
+    // method to draw the planet on the universe at its current position
+    public void draw() {
+        StdDraw.picture(xxPos, yyPos, "images/" + imgFileName);
+    }
 }
