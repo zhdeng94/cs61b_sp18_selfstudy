@@ -7,20 +7,20 @@ public class LinkedListDeque<T> {
     private int size;
 
     /** Node is the building block of the Deque. */
-    public class Node {
-        public Node prev;
-        public T item;
-        public Node next;
+    private class Node {
+        private Node prev;
+        private T item;
+        private Node next;
 
         /** Default constructor */
-        public Node() {
+        private Node() {
             prev = null;
             item = null;
             next = null;
         }
 
         /** Value constructor */
-        public Node(Node n1, T t, Node n2) {
+        private Node(Node n1, T t, Node n2) {
             prev = n1;
             item = t;
             next = n2;
@@ -77,7 +77,8 @@ public class LinkedListDeque<T> {
         System.out.print('\n');
     }
 
-    /** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the front of the deque.
+     *  If no such item exists, returns null. */
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -91,7 +92,8 @@ public class LinkedListDeque<T> {
         return removeNode.item;
     }
 
-    /** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the back of the deque.
+     *  If no such item exists, returns null. */
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -105,7 +107,8 @@ public class LinkedListDeque<T> {
         return removeNode.item;
     }
 
-    /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+    /** Gets the item at the given index, where 0 is the front,
+     *  1 is the next item, and so forth.
      *  If no such item exists, returns null. */
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -118,7 +121,8 @@ public class LinkedListDeque<T> {
         return itemToGet.item;
     }
 
-    /** Same functionality as get(int index) method, but use recursion instead of iteration */
+    /** Same functionality as get(int index) method,
+     *  but use recursion instead of iteration */
     public T getRecursive(int index) {
         if (index < 0 || index >= size) {
             return null;
