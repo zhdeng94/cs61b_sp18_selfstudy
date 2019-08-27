@@ -27,6 +27,17 @@ public class TestArrayRingBuffer {
         assertEquals(testQ.dequeue(), "are");
     }
 
+    @Test
+    public void testForEachLoop() {
+        ArrayRingBuffer<String> testQ = new ArrayRingBuffer<>(3);
+        testQ.enqueue("How");
+        testQ.enqueue("are");
+        testQ.enqueue("you");
+        for (String str: testQ) {
+            System.out.print(str + " ");
+        }
+    }
+
     /** Calls tests for ArrayRingBuffer. */
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestArrayRingBuffer.class);

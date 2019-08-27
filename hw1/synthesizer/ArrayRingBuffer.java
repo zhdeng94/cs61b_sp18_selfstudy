@@ -1,5 +1,6 @@
 
 package synthesizer;
+import javax.print.attribute.standard.JobOriginatingUserName;
 import java.util.Iterator;
 
 //TODO: Make sure to make this class and all of its methods public
@@ -78,7 +79,37 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
+    @Override
+    public Iterator<T> iterator() {
+        return new RingIterator();
+    }
 
+    private class RingIterator implements Iterator<T> {
+        private int ptr;
+        private int numIter;
+
+        // initialize the pointer to the front of the BoundedQueue
+        public RingIterator() {
+            ptr = first;
+            numIter = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (ptr == last && numIter == fillCount) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = rb[ptr];
+            ptr = plusOne(ptr);
+            numIter += 1;
+            return returnItem;
+        }
+    }
 
     /** Helper functions for updating the first and the last variable. */
     private int plusOne(int idx) {
