@@ -7,7 +7,7 @@ import java.util.Set;
  *  A hash table-backed Map implementation. Provides amortized constant time
  *  access to elements via get(), remove(), and put() in the best case.
  *
- *  @author Your name here
+ *  @author Zihao Deng
  */
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
@@ -17,8 +17,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private ArrayMap<K, V>[] buckets;
     private int size;
 
-    private int loadFactor() {
-        return size / buckets.length;
+    private double loadFactor() {
+        return (double) size / buckets.length;
     }
 
     public MyHashMap() {
@@ -53,19 +53,47 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        return buckets[hash(key)].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+
+        // resize if the load factor reach maximum
+
+        if (loadFactor() > MAX_LF) {
+            int numBuckets = buckets.length;
+            ArrayMap<K, V>[] oldBuckets = buckets;
+
+            // double the size of the bucket
+            buckets = new ArrayMap[2 * numBuckets];
+            for (int i = 0; i < 2 * numBuckets; i += 1) {
+                buckets[i] = new ArrayMap<>();
+            }
+
+            // rehash all the keys in the old buckets and copy to the new buckets
+            for (int i = 0; i < numBuckets; i += 1) {
+                for (K k : oldBuckets[i].keySet()) {
+                    V v = oldBuckets[i].get(k);
+                    int newIdx = hash(k);
+                    buckets[newIdx].put(k, v);
+                }
+            }
+        }
+
+        if (!containsKey(key)) {
+            size += 1;
+        }
+
+        int idx = hash(key);
+        buckets[idx].put(key, value);
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
