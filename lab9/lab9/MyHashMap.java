@@ -2,6 +2,7 @@ package lab9;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  *  A hash table-backed Map implementation. Provides amortized constant time
@@ -101,7 +102,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> keyset = new HashSet<>();
+        for (int i = 0; i < buckets.length; i += 1) {
+            for (K k : buckets[i]) {
+                keyset.add(k);
+            }
+        }
+        return keyset;
     }
 
     /* Removes the mapping for the specified key from this map if exists.
@@ -109,7 +116,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException. */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        if (key == null) {
+            throw new IllegalArgumentException("Cannot remove null key!");
+        }
+        int idx = hash(key);
+        return buckets[idx].remove(key);
     }
 
     /* Removes the entry for the specified key only if it is currently mapped to
@@ -117,11 +128,18 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * throw an UnsupportedOperationException.*/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (key == null) {
+            throw new IllegalArgumentException("Cannot remove null key!");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Cannot remove null value!");
+        }
+        int idx = hash(key);
+        return buckets[idx].remove(key, value);
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return keySet().iterator();
     }
 }
