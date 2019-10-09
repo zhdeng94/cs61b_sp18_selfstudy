@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
+import org.junit.Test;
 
 public class QuickSort {
     /**
@@ -47,13 +48,61 @@ public class QuickSort {
     private static <Item extends Comparable> void partition(
             Queue<Item> unsorted, Item pivot,
             Queue<Item> less, Queue<Item> equal, Queue<Item> greater) {
-        // Your code here!
+        for (Item i: unsorted) {
+            if (i.compareTo(pivot) < 0) {
+                less.enqueue(i);
+            }
+            else if (i.compareTo(pivot) == 0) {
+                equal.enqueue(i);
+            }
+            else {
+                greater.enqueue(i);
+            }
+        }
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
-        // Your code here!
+        if (items.size() <= 1) {
+            return items;
+        }
+
+        Item pivot = getRandomItem(items);
+        Queue<Item> less = new Queue<>();
+        Queue<Item> equal = new Queue<>();
+        Queue<Item> greater = new Queue<>();
+
+        partition(items, pivot, less, equal, greater);
+
+        less = quickSort(less);
+        greater = quickSort(greater);
+        items = catenate(catenate(less, equal), greater);
         return items;
+    }
+
+    /** Test the quickSort methods. */
+    @Test
+    public void main() {
+        Queue<String> testQ = new Queue<>();
+        testQ.enqueue("hello");
+        testQ.enqueue("world");
+        testQ.enqueue("hi");
+        testQ.enqueue("fighting");
+        testQ.enqueue("lucky");
+        testQ.enqueue("friend");
+
+        System.out.println("Before Sorting");
+        for (String s: testQ) {
+            System.out.print(s + " ");
+        }
+        System.out.println('\n');
+
+        Queue<String> sortedQ = quickSort(testQ);
+        System.out.println("After Sorting");
+        for (String s: sortedQ) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
     }
 }

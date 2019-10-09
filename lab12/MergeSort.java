@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
+import org.junit.Test;
 
 public class MergeSort {
     /**
@@ -34,8 +35,13 @@ public class MergeSort {
     /** Returns a queue of queues that each contain one item from items. */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+        Queue<Queue<Item>> queueToReturn = new Queue<>();
+        for (Item i: items) {
+            Queue<Item> singleItemQ = new Queue<>();
+            singleItemQ.enqueue(i);
+            queueToReturn.enqueue(singleItemQ);
+        }
+        return queueToReturn;
     }
 
     /**
@@ -53,14 +59,65 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> sortedQ = new Queue<>();
+        int totalNum = q1.size() + q2.size();
+        for (int i = 0; i < totalNum; i += 1) {
+            sortedQ.enqueue(getMin(q1, q2));
+        }
+        return sortedQ;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        int size = items.size();
+
+        if (size <= 1) {
+            return items;
+        }
+        else if (size == 2) {
+            Queue<Queue<Item>> queueWithTwoItem = makeSingleItemQueues(items);
+            Queue<Item> q1 = queueWithTwoItem.dequeue();
+            Queue<Item> q2 = queueWithTwoItem.dequeue();
+            return mergeSortedQueues(q1, q2);
+        }
+        else {
+            Queue<Item> left = new Queue<>();
+            for (int i = 0; i < size / 2; i += 1) {
+                left.enqueue(items.dequeue());
+            }
+            Queue<Item> right = items;
+
+            left = mergeSort(left);
+            right = mergeSort(right);
+
+            items = mergeSortedQueues(left, right);
+            return items;
+        }
+    }
+
+    /** Test the mergeSort methods. */
+    @Test
+    public void main() {
+        Queue<String> testQ = new Queue<>();
+        testQ.enqueue("hello");
+        testQ.enqueue("world");
+        testQ.enqueue("hi");
+        testQ.enqueue("fighting");
+        testQ.enqueue("lucky");
+        testQ.enqueue("friend");
+
+        System.out.println("Before Sorting");
+        for (String s: testQ) {
+            System.out.print(s + " ");
+        }
+        System.out.println('\n');
+
+        Queue<String> sortedQ = mergeSort(testQ);
+        System.out.println("After Sorting");
+        for (String s: sortedQ) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
     }
 }
